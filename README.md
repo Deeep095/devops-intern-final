@@ -1,13 +1,11 @@
 # DevOps Intern Final Assessment
 
-[![CI](https://github.com/REPLACE_WITH_GITHUB_USERNAME/devops-intern-final/actions/workflows/ci.yml/badge.svg)](https://github.com/REPLACE_WITH_GITHUB_USERNAME/devops-intern-final/actions/workflows/ci.yml)
+[![CI](https://github.com/Deeep095/devops-intern-final/actions/workflows/ci.yml/badge.svg)](https://github.com/Deeep095/devops-intern-final/actions/workflows/ci.yml)
 
 **Name:** Deepanshu Jain  
 **Date:** 12 August 2026
 
 This repository demonstrates a small end-to-end DevOps workflow: a Python application is version controlled, scripted for Linux, containerized with Docker, verified by GitHub Actions, described as a Nomad service, and monitored through Grafana Loki.
-
-> Before publishing, replace `REPLACE_WITH_GITHUB_USERNAME` in the badge URLs with the GitHub account name that owns this repository.
 
 ## Repository contents
 
