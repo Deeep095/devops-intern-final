@@ -1,0 +1,27 @@
+Grafana Loki local setup
+========================
+
+Prerequisite: Docker Desktop is running.
+
+1. Start Loki from the repository root:
+
+   docker run -d --name loki -p 3100:3100 -v "${PWD}/monitoring/loki-config.yml:/etc/loki/local-config.yaml" grafana/loki:3.0.0 -config.file=/etc/loki/local-config.yaml
+
+   PowerShell alternative:
+
+   docker run -d --name loki -p 3100:3100 -v "${PWD}/monitoring/loki-config.yml:/etc/loki/local-config.yaml" grafana/loki:3.0.0 -config.file=/etc/loki/local-config.yaml
+
+2. Run the application and forward Docker logs to Loki:
+
+   docker run --rm --name hello-devops --log-driver=loki --log-opt loki-url="http://host.docker.internal:3100/loki/api/v1/push" devops-intern-final:latest
+
+3. View the logs with the Loki HTTP API:
+
+   curl "http://localhost:3100/loki/api/v1/query_range?query=%7Bcontainer_name%3D%22hello-devops%22%7D"
+
+4. Stop and remove Loki after testing:
+
+   docker rm -f loki
+
+Expected log message: Hello, DevOps!
+
