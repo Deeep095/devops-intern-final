@@ -90,12 +90,10 @@ nomad job stop hello-devops
 
 The complete commands are in [`monitoring/loki_setup.txt`](monitoring/loki_setup.txt). In short, start Loki, run the application with Docker’s Loki log driver, then query Loki’s HTTP API. The expected log event is `Hello, DevOps!`.
 
-## Verification checklist
+## Implementation checklist
 
-- [x] `python hello.py` prints `Hello, DevOps!`
-- [x] `scripts/sysinfo.sh` contains `whoami`, `date`, and `df -h`
-- [x] Docker image configuration is present
-- [x] GitHub Actions workflow is configured
-- [x] Nomad service job is configured with 100 MHz CPU and 64 MB memory
-- [x] Loki configuration and log-forwarding commands are documented
-
+- [x] Python application, Linux script, Dockerfile, and CI workflow are committed.
+- [x] Nomad service job is configured with 100 MHz CPU and 64 MB memory.
+- [x] Loki configuration and log-forwarding commands are documented.
+- [x] The Linux script was run successfully; see [`docs/verification.md`](docs/verification.md).
+- [ ] Run Docker, Nomad, and Loki locally after their tools are started, then add screenshots if required by the assessor.
