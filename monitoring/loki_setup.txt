@@ -1,13 +1,9 @@
 Grafana Loki local setup
-========================
+
 
 Prerequisite: Docker Desktop is running.
 
-1. Start Loki from the repository root:
-
-   docker run -d --name loki -p 3100:3100 -v "${PWD}/monitoring/loki-config.yml:/etc/loki/local-config.yaml" grafana/loki:3.0.0 -config.file=/etc/loki/local-config.yaml
-
-   PowerShell alternative:
+1. Starting Loki from the repository root:
 
    docker run -d --name loki -p 3100:3100 -v "${PWD}/monitoring/loki-config.yml:/etc/loki/local-config.yaml" grafana/loki:3.0.0 -config.file=/etc/loki/local-config.yaml
 
