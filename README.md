@@ -90,9 +90,9 @@ The complete commands are in [`monitoring/loki_setup.txt`](monitoring/loki_setup
 
 ## Implementation checklist
 
-- [x] Python application, Linux script, Dockerfile, and CI workflow are committed.
-- [x] Nomad service job is configured with 100 MHz CPU and 64 MB memory.
-- [x] Loki configuration and log-forwarding commands are documented.
-- [x] The Linux script was run successfully; see [`docs/verification.md`](docs/verification.md).
-- [x] Docker image was built and the container printed `Hello, DevOps!`; see [`docs/verification.md`](docs/verification.md).
+- [ ] Python application, Linux script, Dockerfile, and CI workflow are committed.
+- [ ] Nomad service job is configured with 100 MHz CPU and 64 MB memory.
+- [ ] Loki configuration and log-forwarding commands are documented.
+- [ ] The Linux script was run successfully; see [`docs/verification.md`](docs/verification.md).
+- [ ] Docker image was built and the container printed `Hello, DevOps!`; see [`docs/verification.md`](docs/verification.md).
 - [ ] Run Nomad and Loki locally, then add screenshots if required by the assessor.
