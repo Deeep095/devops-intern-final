@@ -5,6 +5,10 @@ job "hello-devops" {
   group "hello" {
     count = 1
 
+    network {
+      mode = "bridge"
+    }
+    
     task "hello" {
       driver = "docker"
 

@@ -74,6 +74,7 @@ Build the Docker image first, then deploy the service from the repository root:
 
 ```bash
 docker build -t devops-intern-final:latest .
+nomad job validate nomad/hello.nomad
 nomad job run nomad/hello.nomad
 nomad job status hello-devops
 ```
