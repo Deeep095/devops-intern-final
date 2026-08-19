@@ -25,6 +25,7 @@ jobs:
       - name: Verify Linux script
         run: |
           bash -n scripts/sysinfo.sh
+          chmod +x scripts/sysinfo.sh
           ./scripts/sysinfo.sh
       - name: Build image
         run: docker build --tag ghcr.io/deeep095/devops-intern-final:${{ github.sha }} .
