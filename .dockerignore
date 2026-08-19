@@ -1,0 +1,8 @@
+.git
+.github
+docs
+monitoring
+nomad
+scripts
+README.md
+**/*.md

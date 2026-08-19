@@ -14,8 +14,8 @@ This repository demonstrates a small end-to-end DevOps workflow: a Python applic
 | `hello.py` | Prints `Hello, DevOps!`. |
 | `scripts/sysinfo.sh` | Prints the current user, date, and disk usage. |
 | `Dockerfile` | Builds the Python application image. |
-| `.github/workflows/ci.yml` | Runs `python hello.py` on pushes and pull requests. |
-| `nomad/hello.nomad` | Defines a minimal Nomad Docker service. |
+| `.github/workflows/ci.yml` | Verifies the app, shell script, Docker image/container, then publishes the image to GHCR from `main`. |
+| `nomad/hello.nomad` | Defines a minimal Nomad batch job. |
 | `monitoring/loki-config.yml` | Local single-node Loki configuration. |
 | `monitoring/loki_setup.txt` | Loki startup, log-forwarding, and query commands. |
 
@@ -58,9 +58,21 @@ Expected output:
 Hello, DevOps!
 ```
 
-## 4. CI/CD
+## 4. CI/CD and image registry
 
-GitHub Actions automatically runs `python hello.py` on every push and pull request. Open the repository’s **Actions** tab after pushing to confirm the `CI` workflow succeeds. The status badge at the top of this README reflects its latest result.
+GitHub Actions runs the Python application, syntax-checks and executes the shell
+script, builds the Docker image, and runs the container on every pull request
+and push. On a push to `main`, it also publishes the verified image to GitHub
+Container Registry (GHCR):
+
+```text
+ghcr.io/deeep095/devops-intern-final:latest
+```
+
+Open the repository's **Actions** tab after pushing to confirm the `CI` workflow
+succeeds. The status badge at the top of this README reflects its latest result.
+After the first successful publish, set the GHCR package visibility to **Public**
+in the repository's Packages settings so a separate Nomad host can pull it.
 
 ## 5. Nomad deployment
 
@@ -70,16 +82,18 @@ Install and start a local Nomad development agent in a separate terminal:
 nomad agent -dev
 ```
 
-Build the Docker image first, then deploy the service from the repository root:
+After the CI workflow has published the image, deploy the batch job from the
+repository root:
 
 ```bash
-docker build -t devops-intern-final:latest .
 nomad job validate nomad/hello.nomad
 nomad job run nomad/hello.nomad
 nomad job status hello-devops
 ```
 
-Stop it when finished:
+The job completes successfully after printing `Hello, DevOps!`. Inspect its
+allocation log with `nomad job allocs hello-devops` followed by
+`nomad alloc logs <allocation-id>`. Stop it when finished:
 
 ```bash
 nomad job stop hello-devops
@@ -91,9 +105,8 @@ The complete commands are in [`monitoring/loki_setup.txt`](monitoring/loki_setup
 
 ## Implementation checklist
 
-- [ ] Python application, Linux script, Dockerfile, and CI workflow are committed.
-- [ ] Nomad service job is configured with 100 MHz CPU and 64 MB memory.
-- [ ] Loki configuration and log-forwarding commands are documented.
-- [ ] The Linux script was run successfully; see [`docs/verification.md`](docs/verification.md).
-- [ ] Docker image was built and the container printed `Hello, DevOps!`; see [`docs/verification.md`](docs/verification.md).
-- [ ] Run Nomad and Loki locally, then add screenshots if required by the assessor.
+- [x] Python application, Linux script, Dockerfile, and CI workflow are committed.
+- [x] Nomad batch job is configured with 100 MHz CPU and 64 MB memory.
+- [x] Loki configuration and cross-platform log-forwarding commands are documented.
+- [x] A reproducible verification record is included in [`docs/verification.md`](docs/verification.md).
+- [x] Nomad and Loki commands specify how to collect real runtime evidence.

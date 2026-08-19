@@ -1,6 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+
 echo "Starting system information bash script..."
-# set -euo pipefail
 
 echo "Current user: $(whoami)"
 echo "Current date: $(date)"
