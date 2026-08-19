@@ -5,7 +5,7 @@
 **Name:** Deepanshu Jain  
 **Date:** 12 August 2026
 
-This repository demonstrates a small end-to-end DevOps workflow: a Python application is version controlled, scripted for Linux, containerized with Docker, verified by GitHub Actions, described as a Nomad service, and monitored through Grafana Loki.
+This repository demonstrates a small end-to-end DevOps workflow: a Python application is version controlled, scripted for Linux, containerized with Docker, verified by GitHub Actions, described as a Nomad batch job, and monitored through Grafana Loki.
 
 ## Repository contents
 
@@ -76,28 +76,66 @@ in the repository's Packages settings so a separate Nomad host can pull it.
 
 ## 5. Nomad deployment
 
-Install and start a local Nomad development agent in a separate terminal:
+> **Note for Windows users:** Run all commands below inside **WSL (Ubuntu)**, not Git Bash. The native Windows Nomad agent does not support Linux Docker containers.
+
+### Prerequisites (first-time WSL setup only)
+
+Install Nomad and the required CNI network plugins inside WSL:
 
 ```bash
-nomad agent -dev
+# Install dependencies
+sudo apt-get update && sudo apt-get install wget unzip iptables -y
+
+# Install Nomad
+cd ~
+wget -qO nomad.zip https://releases.hashicorp.com/nomad/1.6.0/nomad_1.6.0_linux_amd64.zip
+unzip nomad.zip && sudo mv nomad /usr/local/bin/ && rm nomad.zip
+
+# Install CNI plugins (required for Docker networking)
+curl -L -o cni-plugins.tgz "https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz"
+sudo mkdir -p /opt/cni/bin
+sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
+rm cni-plugins.tgz
 ```
 
-After the CI workflow has published the image, deploy the batch job from the
-repository root:
+### Start the agent
+
+In a dedicated terminal, start the Nomad development agent:
 
 ```bash
+sudo nomad agent -dev
+```
+
+### Deploy and verify
+
+In a second terminal, navigate to the project and run the job:
+
+```bash
+cd /mnt/d/DevOps-Intern   # adjust path to match your setup
 nomad job validate nomad/hello.nomad
 nomad job run nomad/hello.nomad
 nomad job status hello-devops
 ```
 
-The job completes successfully after printing `Hello, DevOps!`. Inspect its
-allocation log with `nomad job allocs hello-devops` followed by
-`nomad alloc logs <allocation-id>`. Stop it when finished:
+Once the status shows **complete**, retrieve the allocation ID and view the log:
+
+```bash
+nomad job allocs hello-devops
+nomad alloc logs <allocation-id>
+```
+
+Expected output:
+
+```text
+Hello, DevOps!
+```
+
+Stop the job when finished:
 
 ```bash
 nomad job stop hello-devops
 ```
+
 
 ## 6. Monitoring with Grafana Loki
 

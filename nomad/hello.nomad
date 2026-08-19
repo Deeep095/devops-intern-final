@@ -7,10 +7,9 @@ job "hello-devops" {
   group "hello" {
     count = 1
 
-    network {
-      mode = "bridge"
-    }
-    
+    # No network block: the default host networking works correctly on WSL/Linux.
+    # The bridge network mode requires Docker netns support not available in WSL.
+
     task "hello" {
       driver = "docker"
 
@@ -27,4 +26,3 @@ job "hello-devops" {
     }
   }
 }
-
