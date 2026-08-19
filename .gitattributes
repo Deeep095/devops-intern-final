@@ -1,0 +1,9 @@
+# Always use LF line endings for shell scripts (prevents CRLF breaking shebangs on Linux)
+*.sh text eol=lf
+
+# Use CRLF for Windows-native files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Auto-detect everything else
+* text=auto
