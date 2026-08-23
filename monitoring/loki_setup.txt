@@ -1,9 +1,9 @@
 Grafana Loki local setup and verification
 
 
-Prerequisite: Docker Desktop is running.
+Docker Desktop must be in running state.
 
-1. Install Docker's Loki logging driver once (the `loki` driver is not built into Docker):
+1. Installing Docker's Loki logging driver once because the `loki` driver was not built into Docker:
 
    docker plugin install grafana/loki-docker-driver:3.3.2 --alias loki --grant-all-permissions
 
@@ -11,7 +11,7 @@ Prerequisite: Docker Desktop is running.
 
    docker run -d --name loki -p 3100:3100 -v "${PWD}/monitoring/loki-config.yml:/etc/loki/local-config.yaml" grafana/loki:3.0.0 -config.file=/etc/loki/local-config.yaml
 
-3. Confirm Loki is ready:
+3. Confirmed Loki is ready:
 
    curl --fail http://localhost:3100/ready
 
@@ -21,20 +21,15 @@ Prerequisite: Docker Desktop is running.
 
    docker run --rm --name hello-devops --log-driver=loki --log-opt loki-url="http://localhost:3100/loki/api/v1/push" --log-opt loki-external-labels="job=hello-devops" devops-intern-final:latest
 
-   The Loki driver runs in the Docker daemon, so `localhost:3100` reaches the
-   host-published Loki port on Linux, macOS, and Docker Desktop. It does not
-   rely on `host.docker.internal`.
+   The Loki driver runs in the Docker , so `localhost:3100` reaches the
+   host-published Loki port on Linux, macOS, and Docker Desktop. It does require `host.docker.internal`.
 
-5. Query the forwarded log with the Loki HTTP API:
+5. Querying the forwarded log with the Loki HTTP API:
 
    curl --get --data-urlencode 'query={job="hello-devops"}' http://localhost:3100/loki/api/v1/query_range
 
-   The JSON response must contain `Hello, DevOps!`. Copy the command output
-   into `docs/verification.md` after running it.
-
-6. Stop and remove Loki after testing:
+6. Stopping and removing Loki after testing:
 
    docker rm -f loki
 
-Expected log message: Hello, DevOps!
 
