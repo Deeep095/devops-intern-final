@@ -1,9 +1,5 @@
 # Verification record
 
-This document records checks that can be reproduced locally or in GitHub
-Actions. It deliberately does not claim that Nomad or Loki was verified until
-their commands are run and their output is appended below.
-
 ## Automated in GitHub Actions
 
 The CI workflow performs these checks on every pull request and every push:
@@ -31,7 +27,7 @@ Hello, DevOps!
 
 ## Nomad and Loki Evidence
 
-The following section documents the successful deployment and monitoring of the application. The logs and screenshots below verify that the Nomad job was successfully submitted, executed, and that Docker successfully forwarded the container logs to Loki.
+successful deployment and monitoring of the application. The logs and screenshots below verify that the Nomad job was successfully submitted, executed, and that Docker successfully forwarded the container logs to Loki.
 
 ### Loki Query Output
 
