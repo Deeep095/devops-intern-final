@@ -21,14 +21,14 @@ This repository demonstrates a small end-to-end DevOps workflow: a Python applic
 
 ## 1. Git and GitHub
 
-Initialize and publish the project as a public repository:
+Initialized and published the project as a public repository:
 
 ```bash
 git init
 git add .
 git commit -m "Initial DevOps assessment project"
 git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/devops-intern-final.git
+git remote add origin https://github.com/Deeep095/devops-intern-final.git
 git push -u origin main
 ```
 
@@ -45,14 +45,14 @@ It calls `whoami`, `date`, and `df -h`.
 
 ## 3. Docker
 
-Build the image and run the container:
+Build the image and run the container in docker:
 
 ```bash
 docker build -t devops-intern-final:latest .
 docker run --rm devops-intern-final:latest
 ```
 
-Expected output:
+output:
 
 ```text
 Hello, DevOps!
@@ -60,7 +60,7 @@ Hello, DevOps!
 
 ## 4. CI/CD and image registry
 
-GitHub Actions runs the Python application, syntax-checks and executes the shell
+GitHub Actions runs Python app, syntax check and executes the shell
 script, builds the Docker image, and runs the container on every pull request
 and push. On a push to `main`, it also publishes the verified image to GitHub
 Container Registry (GHCR):
@@ -69,18 +69,15 @@ Container Registry (GHCR):
 ghcr.io/deeep095/devops-intern-final:latest
 ```
 
-Open the repository's **Actions** tab after pushing to confirm the `CI` workflow
-succeeds. The status badge at the top of this README reflects its latest result.
-After the first successful publish, set the GHCR package visibility to **Public**
-in the repository's Packages settings so a separate Nomad host can pull it.
+Repository's **Actions** tab after pushing confirms the `CI` workflow
+success. The status badge at the top of this README reflects its latest result.
 
 ## 5. Nomad deployment
+I being running this project on my Windows system had to use WSL as the native windows nomad agent does not support Linux docker containers
 
-> **Note for Windows users:** Run all commands below inside **WSL (Ubuntu)**, not Git Bash. The native Windows Nomad agent does not support Linux Docker containers.
+### Prerequisites (first-time WSL setup)
 
-### Prerequisites (first-time WSL setup only)
-
-Install Nomad and the required CNI network plugins inside WSL:
+Installing Nomad and the required network plugins inside WSL:
 
 ```bash
 # Install dependencies
@@ -98,9 +95,9 @@ sudo tar -C /opt/cni/bin -xzf cni-plugins.tgz
 rm cni-plugins.tgz
 ```
 
-### Start the agent
+### Starting the agent
 
-In a dedicated terminal, start the Nomad development agent:
+In a terminal, started the Nomad development agent:
 
 ```bash
 sudo nomad agent -dev
@@ -108,29 +105,29 @@ sudo nomad agent -dev
 
 ### Deploy and verify
 
-In a second terminal, navigate to the project and run the job:
+In a second terminal, moving to the project and running the job:
 
 ```bash
-cd /mnt/d/DevOps-Intern   # adjust path to match your setup
+cd /mnt/d/DevOps-Intern   
 nomad job validate nomad/hello.nomad
 nomad job run nomad/hello.nomad
 nomad job status hello-devops
 ```
 
-Once the status shows **complete**, retrieve the allocation ID and view the log:
+Once the status shows **complete**, got the allocation ID and checked the logs:
 
 ```bash
 nomad job allocs hello-devops
 nomad alloc logs <allocation-id>
 ```
 
-Expected output:
+output:
 
 ```text
 Hello, DevOps!
 ```
 
-Stop the job when finished:
+To Stop the job when finished:
 
 ```bash
 nomad job stop hello-devops
@@ -139,7 +136,8 @@ nomad job stop hello-devops
 
 ## 6. Monitoring with Grafana Loki
 
-The complete commands are in [`monitoring/loki_setup.txt`](monitoring/loki_setup.txt). In short, start Loki, run the application with Docker’s Loki log driver, then query Loki’s HTTP API. The expected log event is `Hello, DevOps!`.
+The complete commands are in [`monitoring/loki_setup.txt`](monitoring/loki_setup.txt). 
+Steps are starting Loki, run the application with Docker’s Loki log driver, then query Loki’s HTTP API. The output log event is `Hello, DevOps!`.
 
 ## Implementation checklist
 
